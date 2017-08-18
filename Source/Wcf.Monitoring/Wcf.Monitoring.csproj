@@ -51,5 +51,8 @@
     <Compile Include="ServiceHostExtensionMethods.cs" />
     <Compile Include="ShallowMonitorOperationInvoker.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Wcf.Monitoring.nuspec" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
