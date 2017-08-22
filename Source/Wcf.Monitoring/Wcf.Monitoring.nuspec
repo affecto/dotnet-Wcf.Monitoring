@@ -7,6 +7,6 @@
     <description>$description$</description>
     <projectUrl>https://github.com/affecto/dotnet-Wcf.Monitoring</projectUrl>
     <tags>affecto wcf monitoring health</tags>
-    <releaseNotes>Dynamic monitoring endpoints with shallow and deep implementations.</releaseNotes>
+    <releaseNotes>Do not generate monitoring operations again if the same contract is used in multiple endpoints.</releaseNotes>
   </metadata>
 </package>

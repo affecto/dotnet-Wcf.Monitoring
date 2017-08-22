@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
@@ -37,16 +38,21 @@ namespace Affecto.Wcf.Monitoring
             serviceHost.GenerateDeepMonitoringEndpoints(healthCheckServiceFactory);
         }
 
-        private static void GenerateMonitoringEndpoints(ServiceHostBase serviceHost, string endpointName, Func<IOperationInvoker> operationInvokerFactory)
+        private static void GenerateMonitoringEndpoints(ServiceHostBase serviceHost, string operationName, Func<IOperationInvoker> operationInvokerFactory)
         {
             foreach (ServiceEndpoint endpoint in serviceHost.Description.Endpoints)
             {
                 ContractDescription contract = endpoint.Contract;
 
-                var operationDescription = new OperationDescription(endpointName, contract);
-                var inputMessage = new MessageDescription(contract.Namespace + contract.Name + "/" + endpointName + "_Request", MessageDirection.Input);
+                if (contract.Operations.Any(o => o.Name == operationName))
+                {
+                    continue;
+                }
 
-                var outputMessage = new MessageDescription(contract.Namespace + contract.Name + "/" + endpointName + "_Response", MessageDirection.Output);
+                var operationDescription = new OperationDescription(operationName, contract);
+                var inputMessage = new MessageDescription(contract.Namespace + contract.Name + "/" + operationName + "_Request", MessageDirection.Input);
+
+                var outputMessage = new MessageDescription(contract.Namespace + contract.Name + "/" + operationName + "_Response", MessageDirection.Output);
                 outputMessage.Body.ReturnValue = new MessagePartDescription("Result", contract.Namespace) { Type = typeof(string) };
 
                 operationDescription.Messages.Add(inputMessage);
